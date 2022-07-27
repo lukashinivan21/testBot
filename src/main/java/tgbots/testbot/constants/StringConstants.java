@@ -11,15 +11,6 @@ public class StringConstants {
             " Выбери один из пунктов главного меню";
     public static final String MESS_DEFAULT = "Воспользуйтесь главным меню";
 
-//    public static final String FIRST_MESSAGE = "Привет, пользователь. Меню ниже поможет тебе узнать необходимую информацию о приюте. Выберите один из пунктов...";
-
-//    четыре строки ниже можно закомментировать
-    public static final String CALLBACK_BUTTON1 = "Приют";
-
-    public static final String CALLBACK_BUTTON2 = "Собака";
-
-    public static final String CALLBACK_BUTTON3 = "Отчет";
-
     public static final String CALLBACK_BUTTON4 = "Волонтер";
     public static final String MESS_FOR_BUTTON4 = "Волонтер подключиться к чату в ближайшее время...";
 
@@ -28,8 +19,8 @@ public class StringConstants {
     public static final String TEXT_BUTTON2 = "Как взять собаку из приюта";
 
     public static final String TEXT_BUTTON3 = "Прислать отчет о питомце";
-    public static final String MESS_FOR_BUTTON3 = "В файле приведен образец формы отчета и инструкции по его отправке и заполнению. От себя напомню, что отчет должен содержать" +
-            " фотографии и текстовое описание того, как питомец чувствует себя на новом месте.";
+    public static final String MESS_FOR_BUTTON3 = "Выберите один из пунктов меню";
+
 
     public static final String TEXT_BUTTON4 = "Позвать волонтера";
 
@@ -49,7 +40,7 @@ public class StringConstants {
 
     public static final String TEXT_BUTTON8 = "Могу записать ваши контактные данные для связи";
     public static final String CALLBACK_BUTTON8 = "Контакт";
-    public static final String MESS_FOR_BUTTON8 = "В ответном сообщении введи свои контакты в виде: \"+7xxxxxxxxxx ИМЯ e-mail\", где x - цифра от 0 до 9, без кавычек." +
+    public static final String MESS_FOR_BUTTON8 = "В ответном сообщении введи свои контакты в виде: \"+7xxxxxxxxxx ИМЯ e-mail\", где x - цифра от 0 до 9. Ответное сообщение без кавычек." +
             " Номер телефона и ИМЯ обязательны для заполнения. ИМЯ может содержать фамилию и имя или же только имя";
 
     public static final String GREETING_STEP2 = "Привет, пользователь. Меню ниже поможет тебе получить ответы на наиболее популярные вопросы. Выбери один из пунктов...";
@@ -91,8 +82,18 @@ public class StringConstants {
     public static final String CALLBACK_BUTTON17 = "Отказ";
     public static final String MESS_FOR_BUTTON17 = "В файле находятся основные причины отказа в заборе собаки из приюта";
 
+    public static final String TEXT_BUTTON18 = "Форма ежедневного отчета";
+    public static final String CALLBACK_BUTTON18 = "Форма";
+    public static final String MESS_FOR_BUTTON18 = "Форма отчета";
+
+    public static final String TEXT_BUTTON19 = "Инструкция по заполнению и отправки отчета";
+    public static final String CALLBACK_BUTTON19 = "Заполнение";
+    public static final String MESS_FOR_BUTTON19 = "Инструкция";
+
+
+
     private static final String[] callBacks = {CALLBACK_BUTTON5, CALLBACK_BUTTON6, CALLBACK_BUTTON7, CALLBACK_BUTTON9, CALLBACK_BUTTON10, CALLBACK_BUTTON11, CALLBACK_BUTTON12,
-    CALLBACK_BUTTON13, CALLBACK_BUTTON14, CALLBACK_BUTTON15, CALLBACK_BUTTON16, CALLBACK_BUTTON17};
+    CALLBACK_BUTTON13, CALLBACK_BUTTON14, CALLBACK_BUTTON15, CALLBACK_BUTTON16, CALLBACK_BUTTON17, CALLBACK_BUTTON18, CALLBACK_BUTTON19};
 
     public static final List<String> LIST_CALLBACKS = new ArrayList<>(List.of(callBacks));
 

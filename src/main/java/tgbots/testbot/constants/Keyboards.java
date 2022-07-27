@@ -1,5 +1,6 @@
 package tgbots.testbot.constants;
 
+import org.springframework.stereotype.Repository;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -11,6 +12,7 @@ import java.util.List;
 import static tgbots.testbot.constants.EmojiConstants.CHECK;
 import static tgbots.testbot.constants.StringConstants.*;
 
+@Repository
 public class Keyboards {
 
     public static ReplyKeyboardMarkup keyboard1() {
@@ -98,6 +100,7 @@ public class Keyboards {
         return second;
     }
 
+
     public static InlineKeyboardMarkup keyboard3() {
 
         InlineKeyboardMarkup third = new InlineKeyboardMarkup();
@@ -176,4 +179,31 @@ public class Keyboards {
 
         return third;
     }
+
+    public static InlineKeyboardMarkup keyboard4() {
+
+        InlineKeyboardMarkup forth = new InlineKeyboardMarkup();
+
+        InlineKeyboardButton button20 = new InlineKeyboardButton(CHECK + " " + TEXT_BUTTON18);
+        InlineKeyboardButton button21 = new InlineKeyboardButton(CHECK + " " + TEXT_BUTTON19);
+
+        button20.setCallbackData(CALLBACK_BUTTON18);
+        button21.setCallbackData(CALLBACK_BUTTON19);
+
+        List<InlineKeyboardButton> row1 = new ArrayList<>();
+        row1.add(button20);
+
+        List<InlineKeyboardButton> row2 = new ArrayList<>();
+        row2.add(button21);
+
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+        rowList.add(row1);
+        rowList.add(row2);
+
+        forth.setKeyboard(rowList);
+
+        return forth;
+    }
+
+
 }

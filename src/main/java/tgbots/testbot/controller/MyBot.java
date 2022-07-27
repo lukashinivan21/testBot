@@ -4,8 +4,6 @@ import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramWebhookBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import tgbots.testbot.service.Handler;
@@ -58,22 +56,6 @@ public class MyBot extends TelegramWebhookBot {
                 e.printStackTrace();
             }
         }
-
-        //        if (update.getMessage() != null && update.getMessage().hasText()) {
-//            String chatId = update.getMessage().getChatId().toString();
-//            sendMessage.setChatId(chatId);
-//            sendMessage.setText("HI, " + update.getMessage().getText());
-//            try {
-//                execute(sendMessage);
-//            } catch (TelegramApiException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        try {
-//            execute(sendMessage);
-//        } catch (TelegramApiException e) {
-//            e.printStackTrace();
-//        }
         return handler.sendingMessage(update);
     }
 
