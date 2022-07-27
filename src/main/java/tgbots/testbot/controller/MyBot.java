@@ -3,20 +3,28 @@ package tgbots.testbot.controller;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramWebhookBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import tgbots.testbot.service.Handler;
+
+import static tgbots.testbot.constants.StringConstants.LIST_CALLBACKS;
 
 
 public class MyBot extends TelegramWebhookBot {
+
+    private final Handler handler;
 
     private String webHookPath;
     private String botUsername;
     private String token;
 
 
-    public MyBot(DefaultBotOptions botOptions) {
+    public MyBot(DefaultBotOptions botOptions, Handler handler) {
         super(botOptions);
+        this.handler = handler;
     }
 
     @Override
@@ -36,18 +44,37 @@ public class MyBot extends TelegramWebhookBot {
 
     @Override
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
-        SendMessage sendMessage = new SendMessage();
-        if (update.getMessage() != null && update.getMessage().hasText()) {
-            String chatId = update.getMessage().getChatId().toString();
-            sendMessage.setChatId(chatId);
-            sendMessage.setText("HI, " + update.getMessage().getText());
+        SendDocument sendDocument = null;
+        if (update.hasCallbackQuery()) {
+            String data = update.getCallbackQuery().getData();
+            if (LIST_CALLBACKS.contains(data)) {
+                sendDocument = handler.sendingDocument(update);
+            }
+        }
+        if (sendDocument != null) {
             try {
-                execute(sendMessage);
+                execute(sendDocument);
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
         }
-        return null;
+
+        //        if (update.getMessage() != null && update.getMessage().hasText()) {
+//            String chatId = update.getMessage().getChatId().toString();
+//            sendMessage.setChatId(chatId);
+//            sendMessage.setText("HI, " + update.getMessage().getText());
+//            try {
+//                execute(sendMessage);
+//            } catch (TelegramApiException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        try {
+//            execute(sendMessage);
+//        } catch (TelegramApiException e) {
+//            e.printStackTrace();
+//        }
+        return handler.sendingMessage(update);
     }
 
 

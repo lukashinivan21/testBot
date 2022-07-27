@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import tgbots.testbot.controller.MyBot;
+import tgbots.testbot.service.Handler;
 
 
 @Getter
@@ -25,10 +26,10 @@ public class BotConfig {
     private String token;
 
     @Bean
-    public MyBot myBot() {
+    public MyBot myBot(Handler handler) {
         DefaultBotOptions options = new DefaultBotOptions();
 
-        MyBot myBot = new MyBot(options);
+        MyBot myBot = new MyBot(options, handler);
 
         myBot.setBotUsername(botUserName);
         myBot.setToken(token);
