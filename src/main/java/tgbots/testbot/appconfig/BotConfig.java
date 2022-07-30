@@ -16,13 +16,13 @@ import tgbots.testbot.service.Handler;
 @Configuration
 public class BotConfig {
 
-    @Value("${telegrambot.webHookPath}")
+    @Value("${telegram.bot.webHookPath}")
     private String webHookPath;
 
-    @Value("${telegrambot.botUsername}")
+    @Value("${telegram.bot.botUsername}")
     private String botUserName;
 
-    @Value("${telegrambot.token}")
+    @Value("${telegram.bot.token}")
     private String token;
 
     @Bean

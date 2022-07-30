@@ -4,54 +4,108 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import tgbots.testbot.botstate.BotState;
 import tgbots.testbot.constants.Keyboards;
+import tgbots.testbot.models.Candidate;
+import tgbots.testbot.repository.CandidateRepository;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static tgbots.testbot.constants.StringConstants.*;
 
 @Service
 public class HandlerInputUpdateImpl implements HandlerInputUpdate {
 
+    private final CandidateRepository candidateRepository;
+
+    private BotState currentBotState = null;
+    private final Map<String, BotState> botStatesOfUsers = new HashMap<>();
+    private final Pattern pattern = Pattern.compile("([+0-9]{10,})(\\s*)([\\W+]+)");
+
+    public HandlerInputUpdateImpl(CandidateRepository candidateRepository) {
+        this.candidateRepository = candidateRepository;
+    }
+
     @Override
     public SendMessage handleMessage(Message message) {
 
-        String inputMessage = message.getText();
-        String chatId = message.getChatId().toString();
         SendMessage sendMessage = new SendMessage();
+        String chatId = message.getChatId().toString();
+        Long idChat = message.getChatId();
+        String userName = message.getFrom().getUserName();
         sendMessage.setChatId(chatId);
+        BotState state = botStatesOfUsers.get(chatId);
 
-//        добавить еще одно условие в if
-//        if (START.equals(inputMessage)) {
-//            sendMessage.setText(FIRST_MESSAGE);
-//            sendMessage.setReplyMarkup(Keyboards.keyboard1());
-//        }
+        if (message.hasText()) {
 
-        switch (inputMessage) {
-            case START:
-                sendMessage.setText(MAIN_GREETING);
-                sendMessage.enableMarkdown(true);
+            String inputMessage = message.getText();
+            Matcher matcher = pattern.matcher(inputMessage);
+
+            if (state == BotState.GET_INFO && matcher.matches()) {
+                String phoneNumber = matcher.group(1);
+                String name = matcher.group(3);
+                Candidate candidate = new Candidate();
+                candidate.setId(idChat);
+                candidate.setName(name);
+                candidate.setUserName(userName);
+                candidate.setPhoneNumber(phoneNumber);
+                candidateRepository.save(candidate);
+                sendMessage.setText(SUCCESS_ADD);
+                currentBotState = BotState.DIALOG;
+                botStatesOfUsers.put(chatId, currentBotState);
+            } else if (state == BotState.GET_INFO && !matcher.matches()) {
+                sendMessage.setText(CHECK_MESS);
+            }
+
+            if (START.equals(inputMessage) && state != null) {
+                sendMessage.setText(NO_FIRST_VISIT);
                 sendMessage.setReplyMarkup(Keyboards.keyboard1());
-                break;
-            case TEXT_BUTTON1:
-                sendMessage.setText(GREETING_STEP1);
-                sendMessage.setReplyMarkup(Keyboards.keyboard2());
-                break;
-            case TEXT_BUTTON2:
-                sendMessage.setText(GREETING_STEP2);
-                sendMessage.setReplyMarkup(Keyboards.keyboard3());
-                break;
-            case TEXT_BUTTON3:
-                sendMessage.setText(MESS_FOR_BUTTON3);
-                sendMessage.setReplyMarkup(Keyboards.keyboard4());
-                break;
-            case TEXT_BUTTON4:
-                sendMessage.setText(MESS_FOR_BUTTON4);
-                break;
-            default:
-                sendMessage.setText(MESS_DEFAULT);
-                break;
+            }
+
+            switch (inputMessage) {
+                case START:
+                    sendMessage.setText(MAIN_GREETING);
+                    sendMessage.enableMarkdown(true);
+                    sendMessage.setReplyMarkup(Keyboards.keyboard1());
+                    currentBotState = BotState.DIALOG;
+                    botStatesOfUsers.put(chatId, currentBotState);
+                    break;
+                case TEXT_BUTTON1:
+                    sendMessage.setText(GREETING_STEP1);
+                    sendMessage.setReplyMarkup(Keyboards.keyboard2());
+                    currentBotState = BotState.DIALOG;
+                    botStatesOfUsers.put(chatId, currentBotState);
+                    break;
+                case TEXT_BUTTON2:
+                    sendMessage.setText(GREETING_STEP2);
+                    sendMessage.setReplyMarkup(Keyboards.keyboard3());
+                    currentBotState = BotState.DIALOG;
+                    botStatesOfUsers.put(chatId, currentBotState);
+                    break;
+                case TEXT_BUTTON3:
+                    sendMessage.setText(MESS_FOR_BUTTON3);
+                    sendMessage.setReplyMarkup(Keyboards.keyboard4());
+                    currentBotState = BotState.GET_REPORT;
+                    botStatesOfUsers.put(chatId, currentBotState);
+                    break;
+                case TEXT_BUTTON4:
+                    sendMessage.setText(MESS_FOR_BUTTON4);
+                    break;
+                default:
+                    sendMessage.setText(MESS_DEFAULT);
+                    sendMessage.setReplyMarkup(Keyboards.keyboard1());
+                    currentBotState = BotState.DIALOG;
+                    botStatesOfUsers.put(chatId, currentBotState);
+                    break;
+            }
         }
         return sendMessage;
     }
+
+
 
     @Override
     public SendMessage handleCallback(CallbackQuery callbackQuery) {
@@ -73,6 +127,8 @@ public class HandlerInputUpdateImpl implements HandlerInputUpdate {
                 break;
             case CALLBACK_BUTTON8:
                 sendMessage.setText(MESS_FOR_BUTTON8);
+                currentBotState = BotState.GET_INFO;
+                botStatesOfUsers.put(chatId, currentBotState);
                 break;
             case CALLBACK_BUTTON9:
                 sendMessage.setText(MESS_FOR_BUTTON9);
