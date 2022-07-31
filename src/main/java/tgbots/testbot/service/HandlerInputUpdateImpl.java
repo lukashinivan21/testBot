@@ -4,15 +4,16 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import tgbots.testbot.botstate.BotState;
 import tgbots.testbot.constants.Keyboards;
 import tgbots.testbot.models.Candidate;
 import tgbots.testbot.repository.CandidateRepository;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static tgbots.testbot.constants.StringConstants.*;
 
@@ -21,8 +22,6 @@ public class HandlerInputUpdateImpl implements HandlerInputUpdate {
 
     private final CandidateRepository candidateRepository;
 
-    private BotState currentBotState = null;
-    private final Map<String, BotState> botStatesOfUsers = new HashMap<>();
     private final Pattern pattern = Pattern.compile("([+0-9]{10,})(\\s*)([\\W+]+)");
 
     public HandlerInputUpdateImpl(CandidateRepository candidateRepository) {
@@ -33,85 +32,109 @@ public class HandlerInputUpdateImpl implements HandlerInputUpdate {
     public SendMessage handleMessage(Message message) {
 
         SendMessage sendMessage = new SendMessage();
-        String chatId = message.getChatId().toString();
+
         Long idChat = message.getChatId();
+        String chatId = idChat.toString();
+
         String userName = message.getFrom().getUserName();
+
         sendMessage.setChatId(chatId);
-        BotState state = botStatesOfUsers.get(chatId);
 
         if (message.hasText()) {
-
             String inputMessage = message.getText();
-            Matcher matcher = pattern.matcher(inputMessage);
+            List<Long> chatIds = candidateRepository.findAll().stream().map(Candidate::getId).collect(Collectors.toList());
 
-            if (state == BotState.GET_INFO && matcher.matches()) {
-                String phoneNumber = matcher.group(1);
-                String name = matcher.group(3);
-                Candidate candidate = new Candidate();
-                candidate.setId(idChat);
-                candidate.setName(name);
-                candidate.setUserName(userName);
-                candidate.setPhoneNumber(phoneNumber);
-                candidateRepository.save(candidate);
-                sendMessage.setText(SUCCESS_ADD);
-                currentBotState = BotState.DIALOG;
-                botStatesOfUsers.put(chatId, currentBotState);
-            } else if (state == BotState.GET_INFO && !matcher.matches()) {
-                sendMessage.setText(CHECK_MESS);
+            if (chatIds.contains(idChat)) {
+                Candidate candidate = candidateRepository.findCandidateById(idChat);
+                if (candidate.getBotState().equals(BotState.GET_REPORT.toString()) && message.hasText() && message.hasPhoto()) {
+                    String text = message.getText();
+                    List<PhotoSize> photo = message.getPhoto();
+                    sendMessage.setText(REPORT_OK);
+                } else if (candidate.getBotState().equals(BotState.GET_REPORT.toString())) {
+                    sendMessage.setText(REPORT_NOT_FULL);
+                }
             }
 
-            if (START.equals(inputMessage) && state != null) {
+            if (inputMessage.equals(START) && chatIds.contains(idChat)) {
+                Candidate candidateA = candidateRepository.findCandidateById(idChat);
                 sendMessage.setText(NO_FIRST_VISIT);
+                sendMessage.enableMarkdown(true);
                 sendMessage.setReplyMarkup(Keyboards.keyboard1());
+                candidateA.setBotState(BotState.DIALOG.toString());
+                candidateRepository.save(candidateA);
+            } else if (inputMessage.equals(START)) {
+                sendMessage.setText(MAIN_GREETING);
+                sendMessage.enableMarkdown(true);
+                sendMessage.setReplyMarkup(Keyboards.keyboard1());
+                Candidate newCandidate = new Candidate();
+                newCandidate.setId(idChat);
+                newCandidate.setBotState(BotState.DIALOG.toString());
+                candidateRepository.save(newCandidate);
             }
 
-            switch (inputMessage) {
-                case START:
-                    sendMessage.setText(MAIN_GREETING);
-                    sendMessage.enableMarkdown(true);
-                    sendMessage.setReplyMarkup(Keyboards.keyboard1());
-                    currentBotState = BotState.DIALOG;
-                    botStatesOfUsers.put(chatId, currentBotState);
-                    break;
-                case TEXT_BUTTON1:
-                    sendMessage.setText(GREETING_STEP1);
-                    sendMessage.setReplyMarkup(Keyboards.keyboard2());
-                    currentBotState = BotState.DIALOG;
-                    botStatesOfUsers.put(chatId, currentBotState);
-                    break;
-                case TEXT_BUTTON2:
-                    sendMessage.setText(GREETING_STEP2);
-                    sendMessage.setReplyMarkup(Keyboards.keyboard3());
-                    currentBotState = BotState.DIALOG;
-                    botStatesOfUsers.put(chatId, currentBotState);
-                    break;
-                case TEXT_BUTTON3:
-                    sendMessage.setText(MESS_FOR_BUTTON3);
-                    sendMessage.setReplyMarkup(Keyboards.keyboard4());
-                    currentBotState = BotState.GET_REPORT;
-                    botStatesOfUsers.put(chatId, currentBotState);
-                    break;
-                case TEXT_BUTTON4:
-                    sendMessage.setText(MESS_FOR_BUTTON4);
-                    break;
-                default:
-                    sendMessage.setText(MESS_DEFAULT);
-                    sendMessage.setReplyMarkup(Keyboards.keyboard1());
-                    currentBotState = BotState.DIALOG;
-                    botStatesOfUsers.put(chatId, currentBotState);
-                    break;
+            if (chatIds.contains(idChat) && !inputMessage.equals(START)) {
+                Candidate candidateB = candidateRepository.findCandidateById(idChat);
+                if (candidateB.getBotState().equals(BotState.DIALOG.toString())) {
+                    switch (inputMessage) {
+                        case TEXT_BUTTON1:
+                            sendMessage.setText(GREETING_STEP1);
+                            sendMessage.setReplyMarkup(Keyboards.keyboard2());
+                            break;
+                        case TEXT_BUTTON2:
+                            sendMessage.setText(GREETING_STEP2);
+                            sendMessage.setReplyMarkup(Keyboards.keyboard3());
+                            break;
+                        case TEXT_BUTTON3:
+                            sendMessage.setText(MESS_FOR_BUTTON3);
+                            sendMessage.setReplyMarkup(Keyboards.keyboard4());
+                            candidateB.setBotState(BotState.GET_REPORT.toString());
+                            candidateRepository.save(candidateB);
+                            break;
+                        case TEXT_BUTTON4:
+                            sendMessage.setText(MESS_FOR_BUTTON4);
+                            break;
+                        default:
+                            sendMessage.setText(MESS_DEFAULT);
+                            sendMessage.enableMarkdown(true);
+                            sendMessage.setReplyMarkup(Keyboards.keyboard1());
+                            break;
+                    }
+                }
+            }
+
+            if (chatIds.contains(idChat)) {
+
+                Candidate candidateC = candidateRepository.findCandidateById(idChat);
+
+                Matcher matcher = pattern.matcher(inputMessage);
+
+                if (candidateC.getBotState().equals(BotState.GET_INFO.toString()) && matcher.matches()) {
+                    sendMessage.setText(SUCCESS_ADD);
+                    String phoneNumber = matcher.group(1);
+                    String name = matcher.group(3);
+                    candidateC.setName(name);
+                    candidateC.setPhoneNumber(phoneNumber);
+                    candidateC.setUserName(userName);
+                    candidateC.setBotState(BotState.DIALOG.toString());
+                    candidateRepository.save(candidateC);
+                } else if (candidateC.getBotState().equals(BotState.GET_INFO.toString()) && !matcher.matches()) {
+                    sendMessage.setText(CHECK_MESS);
+                }
             }
         }
         return sendMessage;
     }
 
 
-
     @Override
     public SendMessage handleCallback(CallbackQuery callbackQuery) {
 
-        String chatId = callbackQuery.getMessage().getChatId().toString();
+        Long idChat = callbackQuery.getMessage().getChatId();
+        String chatId = idChat.toString();
         String data = callbackQuery.getData();
+
+        Candidate currentCandidate = candidateRepository.findCandidateById(idChat);
+
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
 
@@ -127,8 +150,8 @@ public class HandlerInputUpdateImpl implements HandlerInputUpdate {
                 break;
             case CALLBACK_BUTTON8:
                 sendMessage.setText(MESS_FOR_BUTTON8);
-                currentBotState = BotState.GET_INFO;
-                botStatesOfUsers.put(chatId, currentBotState);
+                currentCandidate.setBotState(BotState.GET_INFO.toString());
+                candidateRepository.save(currentCandidate);
                 break;
             case CALLBACK_BUTTON9:
                 sendMessage.setText(MESS_FOR_BUTTON9);

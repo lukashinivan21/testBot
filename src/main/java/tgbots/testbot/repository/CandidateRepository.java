@@ -7,4 +7,6 @@ import tgbots.testbot.models.Candidate;
 @Repository
 public interface CandidateRepository extends JpaRepository<Candidate, Long> {
 
+    Candidate findCandidateById(Long id);
+
 }

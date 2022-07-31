@@ -1,5 +1,7 @@
 package tgbots.testbot.models;
 
+import tgbots.testbot.botstate.BotState;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -22,6 +24,9 @@ public class Candidate {
 
     @Column(name = "phone_number")
     private String phoneNumber;
+
+    @Column(name = "bot_state")
+    private String botState;
 
     public Candidate(Long id, String name, String userName, String phoneNumber) {
         this.id = id;
@@ -50,6 +55,10 @@ public class Candidate {
         return phoneNumber;
     }
 
+    public String getBotState() {
+        return botState;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -65,6 +74,8 @@ public class Candidate {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public void setBotState(String botState) {this.botState = botState;}
 
     @Override
     public boolean equals(Object o) {

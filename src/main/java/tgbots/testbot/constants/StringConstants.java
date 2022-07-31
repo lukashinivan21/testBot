@@ -8,10 +8,14 @@ public class StringConstants {
     public static final String START = "/start";
 
     public static final String MAIN_GREETING = "Привет, пользователь. Я помогу тебе подобрать самого веселого и замечательного щенка из нашего питомника." +
-            " Выбери один из пунктов главного меню.";
+            " Выбери один из пунктов главного меню. \nВ любой момент при необходимости возврата к главному меню, " +
+            "если оно не отображается на экране, введи команду \"/start\" (без кавычек).";
+
     public static final String MESS_DEFAULT = "Воспользуйтесь главным меню";
 
-    public static final String NO_FIRST_VISIT = "Пользователь, я рад, что ты снова к нам вернулся. Выбери один из пунктов главного меню...";
+    public static final String NO_FIRST_VISIT = "Пользователь, я рад, что ты снова к нам вернулся. Выбери один из пунктов главного меню..." +
+            "\nНапоминаю, что в любой момент при необходимости возврата к главному меню, если оно не отображается на экране, " +
+            "введи команду \"/start\" (без кавычек).";
 
     public static final String CALLBACK_BUTTON4 = "Волонтер";
     public static final String MESS_FOR_BUTTON4 = "Волонтер подключиться к чату в ближайшее время...";
@@ -93,6 +97,11 @@ public class StringConstants {
     public static final String CHECK_MESS = "Проверьте правильность введенных данных";
 
     public static final String SUCCESS_ADD = "Ваши контакты были успешно сохранены";
+
+    public static final String REPORT_OK = "Отправленный отчет соотвествует требованиям. Полученная информация была успешно сохранена";
+
+    public static final String REPORT_NOT_FULL = "В отправленном отчете не хватает либо фото, либо текстового описания. Будьте внимательнее! И в ответном" +
+            " сообщении отправьте фото вместе с текстовым описанием";
 
     private static final String[] callBacks = {CALLBACK_BUTTON5, CALLBACK_BUTTON6, CALLBACK_BUTTON7, CALLBACK_BUTTON9, CALLBACK_BUTTON10, CALLBACK_BUTTON11, CALLBACK_BUTTON12,
     CALLBACK_BUTTON13, CALLBACK_BUTTON14, CALLBACK_BUTTON15, CALLBACK_BUTTON16, CALLBACK_BUTTON17, CALLBACK_BUTTON18, CALLBACK_BUTTON19};
