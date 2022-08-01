@@ -59,7 +59,6 @@ public class MyBot extends TelegramWebhookBot {
         return handler.sendingMessage(update);
     }
 
-
     public void setWebHookPath(String webHookPath) {
         this.webHookPath = webHookPath;
     }

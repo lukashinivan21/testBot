@@ -7,6 +7,8 @@ public class StringConstants {
 
     public static final String START = "/start";
 
+    public static final String PHONE_NUMBER = "/myPhoneNumber";
+
     public static final String MAIN_GREETING = "Привет, пользователь. Я помогу тебе подобрать самого веселого и замечательного щенка из нашего питомника." +
             " Выбери один из пунктов главного меню. \nВ любой момент при необходимости возврата к главному меню, " +
             "если оно не отображается на экране, введи команду \"/start\" (без кавычек).";

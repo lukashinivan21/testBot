@@ -9,4 +9,5 @@ public interface HandlerInputUpdate {
     SendMessage handleMessage(Message message);
 
     SendMessage handleCallback(CallbackQuery callbackQuery);
+
 }

@@ -8,6 +8,6 @@ public interface Handler {
 
     BotApiMethod<?> sendingMessage(Update update);
 
-    SendDocument  sendingDocument(Update update);
+    SendDocument sendingDocument(Update update);
 
 }

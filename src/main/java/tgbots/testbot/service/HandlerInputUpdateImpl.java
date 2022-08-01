@@ -3,8 +3,8 @@ package tgbots.testbot.service;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+import org.telegram.telegrambots.meta.api.objects.Document;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import tgbots.testbot.botstate.BotState;
 import tgbots.testbot.constants.Keyboards;
 import tgbots.testbot.models.Candidate;
@@ -46,10 +46,14 @@ public class HandlerInputUpdateImpl implements HandlerInputUpdate {
 
             if (chatIds.contains(idChat)) {
                 Candidate candidate = candidateRepository.findCandidateById(idChat);
-                if (candidate.getBotState().equals(BotState.GET_REPORT.toString()) && message.hasText() && message.hasPhoto()) {
+                if (candidate.getBotState().equals(BotState.GET_REPORT.toString()) && message.hasDocument()) {
                     String text = message.getText();
-                    List<PhotoSize> photo = message.getPhoto();
-                    sendMessage.setText(REPORT_OK);
+                    Document photo = message.getDocument();
+                    if (text != null && photo != null) {
+                        sendMessage.setText(REPORT_OK);
+                    } else {
+                        sendMessage.setText("Информация не была сохранена");
+                    }
                 } else if (candidate.getBotState().equals(BotState.GET_REPORT.toString())) {
                     sendMessage.setText(REPORT_NOT_FULL);
                 }
@@ -93,6 +97,9 @@ public class HandlerInputUpdateImpl implements HandlerInputUpdate {
                         case TEXT_BUTTON4:
                             sendMessage.setText(MESS_FOR_BUTTON4);
                             break;
+                        case PHONE_NUMBER:
+                            sendMessage.setText(candidateRepository.findCandidateById(idChat).getPhoneNumber());
+                            break;
                         default:
                             sendMessage.setText(MESS_DEFAULT);
                             sendMessage.enableMarkdown(true);
@@ -101,6 +108,7 @@ public class HandlerInputUpdateImpl implements HandlerInputUpdate {
                     }
                 }
             }
+
 
             if (chatIds.contains(idChat)) {
 
@@ -195,6 +203,4 @@ public class HandlerInputUpdateImpl implements HandlerInputUpdate {
         }
         return sendMessage;
     }
-
-
 }
