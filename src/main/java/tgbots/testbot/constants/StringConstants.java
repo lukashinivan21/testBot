@@ -17,6 +17,10 @@ public class StringConstants {
     public static final String CALLBACK_CAT = "Кот";
     public static final String MESS_CAT = "Пользователь, вы выбрали питомник для кошек...";
 
+    public static final String MESS_FOR_CAT_OWNER = "Так как вы уже выбрали питомник для кошек, то выбрать питомник для собак вы не можете...";
+
+    public static final String MESS_FOR_DOG_OWNER = "Так как вы уже выбрали питомник для собак, то выбрать питомник для кошек вы не можете...";
+
     public static final String MAIN_GREETING = "Привет, пользователь. Я помогу тебе подобрать самого веселого и замечательного щенка из нашего питомника." +
             " Выбери один из пунктов главного меню. \nВ любой момент при необходимости возврата к главному меню, " +
             "если оно не отображается на экране, введи команду \"/start\" (без кавычек).";
@@ -104,7 +108,8 @@ public class StringConstants {
     public static final String CALLBACK_BUTTON19 = "Заполнение";
     public static final String MESS_FOR_BUTTON19 = "Инструкция";
 
-    public static final String CHECK_MESS = "Проверьте правильность введенных данных";
+    public static final String CHECK_MESS = "Проверьте правильность введенных данных или введите команду \"/start\" для отмены ввода контактных данных и " +
+            "возврата в главное меню";
 
     public static final String SUCCESS_ADD = "Ваши контакты были успешно сохранены";
 

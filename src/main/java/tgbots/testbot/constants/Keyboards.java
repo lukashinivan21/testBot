@@ -21,7 +21,7 @@ public class Keyboards {
 
         first.setSelective(true);
         first.setResizeKeyboard(true);
-        first.setOneTimeKeyboard(false);
+        first.setOneTimeKeyboard(true);
 
         InlineKeyboardButton button1 = new InlineKeyboardButton(TEXT_BUTTON1);
         InlineKeyboardButton button2 = new InlineKeyboardButton(TEXT_BUTTON2);
@@ -196,6 +196,75 @@ public class Keyboards {
         rows.add(row6);
         rows.add(row7);
         rows.add(row8);
+        rows.add(row9);
+        rows.add(row10);
+        rows.add(row11);
+
+        third.setKeyboard(rows);
+
+        return third;
+    }
+
+
+
+    public static InlineKeyboardMarkup keyboard3Cat() {
+
+        InlineKeyboardMarkup third = new InlineKeyboardMarkup();
+
+        InlineKeyboardButton button9 = new InlineKeyboardButton(CHECK + " " + TEXT_BUTTON9);
+        InlineKeyboardButton button10 = new InlineKeyboardButton(CHECK + " " + TEXT_BUTTON10);
+        InlineKeyboardButton button11 = new InlineKeyboardButton(CHECK + " " + TEXT_BUTTON11);
+        InlineKeyboardButton button12 = new InlineKeyboardButton(CHECK + " " + TEXT_BUTTON12);
+        InlineKeyboardButton button13 = new InlineKeyboardButton(CHECK + " " + TEXT_BUTTON13);
+        InlineKeyboardButton button14 = new InlineKeyboardButton(CHECK + " " + TEXT_BUTTON14);
+        InlineKeyboardButton button17 = new InlineKeyboardButton(CHECK + " " + TEXT_BUTTON17);
+        InlineKeyboardButton button18 = new InlineKeyboardButton(CHECK + " " + TEXT_BUTTON8);
+        InlineKeyboardButton button19 = new InlineKeyboardButton(CHECK + " " + TEXT_BUTTON4);
+
+        button9.setCallbackData(CALLBACK_BUTTON9);
+        button10.setCallbackData(CALLBACK_BUTTON10);
+        button11.setCallbackData(CALLBACK_BUTTON11);
+        button12.setCallbackData(CALLBACK_BUTTON12);
+        button13.setCallbackData(CALLBACK_BUTTON13);
+        button14.setCallbackData(CALLBACK_BUTTON14);
+        button17.setCallbackData(CALLBACK_BUTTON17);
+        button18.setCallbackData(CALLBACK_BUTTON8);
+        button19.setCallbackData(CALLBACK_BUTTON4);
+
+        List<InlineKeyboardButton> row1 = new ArrayList<>();
+        row1.add(button9);
+
+        List<InlineKeyboardButton> row2 = new ArrayList<>();
+        row2.add(button10);
+
+        List<InlineKeyboardButton> row3 = new ArrayList<>();
+        row3.add(button11);
+
+        List<InlineKeyboardButton> row4 = new ArrayList<>();
+        row4.add(button12);
+
+        List<InlineKeyboardButton> row5 = new ArrayList<>();
+        row5.add(button13);
+
+        List<InlineKeyboardButton> row6 = new ArrayList<>();
+        row6.add(button14);
+
+        List<InlineKeyboardButton> row9 = new ArrayList<>();
+        row9.add(button17);
+
+        List<InlineKeyboardButton> row10 = new ArrayList<>();
+        row10.add(button18);
+
+        List<InlineKeyboardButton> row11 = new ArrayList<>();
+        row11.add(button19);
+
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        rows.add(row1);
+        rows.add(row2);
+        rows.add(row3);
+        rows.add(row4);
+        rows.add(row5);
+        rows.add(row6);
         rows.add(row9);
         rows.add(row10);
         rows.add(row11);

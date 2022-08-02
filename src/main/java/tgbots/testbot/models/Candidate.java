@@ -1,13 +1,10 @@
 package tgbots.testbot.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "candidates")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Candidate {
 
     @Id
