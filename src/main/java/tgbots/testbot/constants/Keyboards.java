@@ -56,6 +56,31 @@ public class Keyboards {
         return first;
     }
 
+    public static InlineKeyboardMarkup chooseShelter() {
+
+        InlineKeyboardMarkup main = new InlineKeyboardMarkup();
+
+        InlineKeyboardButton dogButton = new InlineKeyboardButton(CHECK + " " + DOG_SHELTER);
+        InlineKeyboardButton catButton = new InlineKeyboardButton(CHECK + " " + CAT_SHELTER);
+
+        dogButton.setCallbackData(CALLBACK_DOG);
+        catButton.setCallbackData(CALLBACK_CAT);
+
+        List<InlineKeyboardButton> row1 = new ArrayList<>();
+        row1.add(dogButton);
+
+        List<InlineKeyboardButton> row2 = new ArrayList<>();
+        row2.add(catButton);
+
+        List<List<InlineKeyboardButton>> result = new ArrayList<>();
+        result.add(row1);
+        result.add(row2);
+
+        main.setKeyboard(result);
+
+        return main;
+    }
+
 
     public static InlineKeyboardMarkup keyboard2() {
 
