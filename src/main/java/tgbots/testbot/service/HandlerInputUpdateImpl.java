@@ -45,7 +45,7 @@ public class HandlerInputUpdateImpl implements HandlerInputUpdate {
 
         sendMessage.setChatId(chatId);
 
-        if (message.hasText()) {
+        if (message.hasText() || (message.hasText() && message.hasDocument())) {
             String inputMessage = message.getText();
 
             List<Long> dogChatIds = dogOwnerRepository.findAll().stream().map(DogOwner::getId).collect(Collectors.toList());
@@ -64,6 +64,7 @@ public class HandlerInputUpdateImpl implements HandlerInputUpdate {
                     Document photo = message.getDocument();
                     if (text != null && photo != null) {
                         sendMessage.setText(REPORT_OK);
+                        System.out.println(text);
                     } else {
                         sendMessage.setText("Информация не была сохранена");
                     }
@@ -221,15 +222,6 @@ public class HandlerInputUpdateImpl implements HandlerInputUpdate {
                     catOwnerRepository.save(newCatOwner);
                 }
                 break;
-//            case CALLBACK_BUTTON5:
-//                sendMessage.setText(MESS_FOR_BUTTON5);
-//                break;
-//            case CALLBACK_BUTTON6:
-//                sendMessage.setText(MESS_FOR_BUTTON6);
-//                break;
-//            case CALLBACK_BUTTON7:
-//                sendMessage.setText(MESS_FOR_BUTTON7);
-//                break;
             case CALLBACK_BUTTON8:
                 sendMessage.setText(MESS_FOR_BUTTON8);
                 if (dogOwnersId.contains(idChat)) {
@@ -242,45 +234,6 @@ public class HandlerInputUpdateImpl implements HandlerInputUpdate {
                     catOwnerRepository.save(catOwner);
                 }
                 break;
-//            case CALLBACK_BUTTON9:
-//                sendMessage.setText(MESS_FOR_BUTTON9);
-//                break;
-//            case CALLBACK_BUTTON10:
-//                sendMessage.setText(MESS_FOR_BUTTON10);
-//                break;
-//            case CALLBACK_BUTTON11:
-//                sendMessage.setText(MESS_FOR_BUTTON11);
-//                break;
-//            case CALLBACK_BUTTON12:
-//                sendMessage.setText(MESS_FOR_BUTTON12);
-//                break;
-//            case CALLBACK_BUTTON13:
-//                sendMessage.setText(MESS_FOR_BUTTON13);
-//                break;
-//            case CALLBACK_BUTTON14:
-//                sendMessage.setText(MESS_FOR_BUTTON14);
-//                break;
-//            case CALLBACK_BUTTON15:
-//                sendMessage.setText(MESS_FOR_BUTTON15);
-//                break;
-//            case CALLBACK_BUTTON16:
-//                sendMessage.setText(MESS_FOR_BUTTON16);
-//                break;
-//            case CALLBACK_BUTTON17:
-//                sendMessage.setText(MESS_FOR_BUTTON17);
-//                break;
-//            case CALLBACK_BUTTON18:
-//                sendMessage.setText(MESS_FOR_BUTTON18);
-//                break;
-//            case CALLBACK_BUTTON19:
-//                sendMessage.setText(MESS_FOR_BUTTON19);
-//                break;
-//            case CALLBACK_BUTTON4:
-//                sendMessage.setText(MESS_FOR_BUTTON4);
-//                break;
-//            default:
-//                sendMessage.setText(MESS_DEFAULT);
-//                break;
         }
         return sendMessage;
     }

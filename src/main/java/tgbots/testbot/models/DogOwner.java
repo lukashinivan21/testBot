@@ -10,4 +10,7 @@ public class DogOwner extends Candidate{
         super();
     }
 
+    public DogOwner(Long id, String name, String userName, String phoneNumber, String botState) {
+        super(id, name, userName, phoneNumber, botState);
+    }
 }

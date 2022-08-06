@@ -11,4 +11,7 @@ public class CatOwner extends Candidate {
         super();
     }
 
+    public CatOwner(Long id, String name, String userName, String phoneNumber, String botState) {
+        super(id, name, userName, phoneNumber, botState);
+    }
 }

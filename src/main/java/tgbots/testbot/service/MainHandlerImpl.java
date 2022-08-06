@@ -3,7 +3,6 @@ package tgbots.testbot.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -25,7 +24,7 @@ public class MainHandlerImpl implements Handler {
     }
 
     @Override
-    public BotApiMethod<?> sendingMessage(Update update) {
+    public SendMessage sendingMessage(Update update) {
         SendMessage result = null;
 
         if (update.hasCallbackQuery()) {
