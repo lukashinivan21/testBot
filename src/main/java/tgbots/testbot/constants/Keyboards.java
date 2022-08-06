@@ -28,11 +28,6 @@ public class Keyboards {
         InlineKeyboardButton button3 = new InlineKeyboardButton(TEXT_BUTTON3);
         InlineKeyboardButton button4 = new InlineKeyboardButton(TEXT_BUTTON4);
 
-//        button1.setCallbackData(CALLBACK_BUTTON1);
-//        button2.setCallbackData(CALLBACK_BUTTON2);
-//        button3.setCallbackData(CALLBACK_BUTTON3);
-//        button4.setCallbackData(CALLBACK_BUTTON4);
-
         KeyboardRow row1 = new KeyboardRow();
         row1.add(button1.getText());
 

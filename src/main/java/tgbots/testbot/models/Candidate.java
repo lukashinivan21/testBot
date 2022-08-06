@@ -23,11 +23,12 @@ public class Candidate {
     @Column(name = "bot_state")
     private String botState;
 
-    public Candidate(Long id, String name, String userName, String phoneNumber) {
+    public Candidate(Long id, String name, String userName, String phoneNumber, String botState) {
         this.id = id;
         this.name = name;
         this.userName = userName;
         this.phoneNumber = phoneNumber;
+        this.botState = botState;
     }
 
     public Candidate() {
